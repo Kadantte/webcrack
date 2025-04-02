@@ -1,12 +1,15 @@
+import tailwindcss from '@tailwindcss/vite';
 import path from 'node:path';
-import { defineConfig } from 'vite';
-import monacoEditor from 'vite-plugin-monaco-editor';
+import { defineConfig, type Plugin } from 'vite';
+import monacoEditor, {
+  type IMonacoEditorOpts,
+} from 'vite-plugin-monaco-editor';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import solid from 'vite-plugin-solid';
 
 // https://github.com/vdesjs/vite-plugin-monaco-editor/issues/21
 const { default: monacoEditorPlugin } = monacoEditor as unknown as {
-  default: typeof monacoEditor;
+  default: (options: IMonacoEditorOpts) => Plugin;
 };
 
 export default defineConfig({
@@ -42,6 +45,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    tailwindcss(),
     nodePolyfills({ exclude: ['fs'] }),
     monacoEditorPlugin({
       languageWorkers: ['editorWorkerService', 'typescript'],
